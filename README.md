@@ -10,3 +10,4 @@ There are many pl-extension-like project:
 
 - [lightning-flash](https://github.com/PyTorchLightning/lightning-flash)
 - [lightning-transformers](https://github.com/PyTorchLightning/lightning-transformers)
+- [lightning-bolts](https://github.com/PyTorchLightning/lightning-bolts)
