@@ -75,6 +75,8 @@ class LoggingLogger(LightningLoggerBase):
             _str += "Epoch[%d] " % metrics.pop('epoch')
         if 'iter' in metrics:
             _str += "Iter[%d] " % metrics.pop('iter')
+        else:
+            _str += "Step[%d] " % step
         if 'speed' in metrics:
             _str += "Speed: %.2f samples/sec, " % metrics.pop('speed')
         for k in metrics:
