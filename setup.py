@@ -3,7 +3,7 @@
 import io
 import re
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open("README.md", "r") as f:
     readme = f.read()
@@ -19,21 +19,23 @@ with open("requirements/build.txt", "r") as f:
             requires.append(line)
 
 with io.open("pl_extension/__init__.py", "rt", encoding="utf8") as f:
-    version = re.search(r"__version__ = \'(.*?)\'", f.read()).group(1)
+    version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
 setup(
     name="pl-extension",
     version=version,
-    description="TODO",
+    description="extension for pytorch-lightning",
     long_description=readme,
-    author="user",
-    author_email="duino472365351@gmail.com",
-    url="https://github.com/user/pl_extension",
+    author="duinodu",
+    author_email="472365351@qq.com",
+    url="https://github.com/duinodu/pl-extension",
+    project_urls={
+        "Bug Tracker": "https://github.com/duinodu/pl-extension/issues",
+    },
     license=license,
-    platform="linux",
     zip_safe=False,
     include_package_data=True,
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
+    packages=find_packages(exclude=["tests", "tests/*", "docs"]),
+    python_requires=">=3.6",
     install_requires=requires,
-    entry_points={"console_scripts": ["pl_extension = pl_extension.cli:main"]},
 )

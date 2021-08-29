@@ -7,7 +7,7 @@ build:
 	python setup.py build
 
 upload:
-	python setup.py bdist_wheel upload -r hobot-local
+	python3 -m twine upload --repository pypi dist/* --verbose
 
 clean:
 	@rm -rf build dist *.egg-info
