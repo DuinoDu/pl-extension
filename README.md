@@ -1,9 +1,10 @@
-# Sample Module Repository
+# pl-extension
 
-This simple project is an example repo for Python projects.
+`PytorchLightning` is awesome, we love using pl.
 
----------------
+`pl-extension` is some useful extensions for pl.
 
-If you want to learn more about ``setup.py`` files, check out `this repository <https://github.com/kennethreitz/setup.py>`_.
+There are many pl-extension-like project:
 
-✨🍰✨
+- [lightning-flash](https://github.com/PyTorchLightning/lightning-flash)
+- [lightning-transformers](https://github.com/PyTorchLightning/lightning-transformers)

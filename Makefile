@@ -10,19 +10,19 @@ upload:
 	python setup.py bdist_wheel upload -r hobot-local
 
 clean:
-	@rm -rf build dist src/*.egg-info
+	@rm -rf build dist *.egg-info
 
 test:
 	python /usr/bin/nosetests -s tests --verbosity=2 --rednose --nologcapture
 
 pep8:
-	autopep8 src/pl_extension --recursive -i
+	autopep8 pl_extension --recursive -i
 
 lint:
-	pylint src/pl_extension --reports=n
+	pylint pl_extension --reports=n
 
 lintfull:
-	pylint src/pl_extension
+	pylint pl_extension
 
 install:
 	python setup.py install

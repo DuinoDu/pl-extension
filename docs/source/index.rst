@@ -3,14 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pl_extension's documentation!
+Welcome to pl_extension!
 ==================================
 
-Contents:
+*pl_extension* is extension to `Pytorch Lightning <https://pytorch-lightning.readthedocs.io/en/latest/>`_ ,
+with more useful callbacks and utilities.
 
 .. toctree::
    :maxdepth: 2
+   :name: api
+   :caption: API Reference
 
+   api_reference
 
 
 Indices and tables
@@ -19,4 +23,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

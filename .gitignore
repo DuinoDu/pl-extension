@@ -21,7 +21,6 @@ parts/
 sdist/
 var/
 *.egg-info/
-src/*.egg-info/
 .installed.cfg
 *.egg
 
@@ -62,7 +61,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+docs/build/
 
 # PyBuilder
 target/

@@ -10,14 +10,14 @@ with open('README.md', 'r') as f:
 with open('LICENSE', 'r') as f:
     license = f.read()
 
-with open('requirements.txt', 'r') as f:
+with open('requirements/build.txt', 'r') as f:
     requires = []
     for line in f:
         line = line.strip()
         if not line.startswith('#'):
             requires.append(line)
 
-with io.open("src/pl_extension/__init__.py", "rt", encoding="utf8") as f:
+with io.open("pl_extension/__init__.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = \'(.*?)\'', f.read()).group(1)
 
 setup(
@@ -31,8 +31,6 @@ setup(
     license=license,
     platform='linux',
     zip_safe=False,
-    packages=find_packages("src"),
-    package_dir={'': 'src'},
     include_package_data=True,
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=requires,
