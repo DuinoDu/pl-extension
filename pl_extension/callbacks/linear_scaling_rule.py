@@ -1,7 +1,7 @@
-from typing import List, Set, Dict, Tuple, Optional
 import logging
-from pytorch_lightning.callbacks.base import Callback
+from typing import Dict, List, Optional, Set, Tuple
 
+from pytorch_lightning.callbacks.base import Callback
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class LinearScalingRule(Callback):
         # TODO: log info about only support ddp mode
         msg = "LinearScalingRule: "
         # batch size
-        if hasattr(trainer.datamodule, 'batch_size'):
+        if hasattr(trainer.datamodule, "batch_size"):
             # batch_size is not multiplied by scale, because
             # trainer.datamodule.batch_size is actually batch_size_per_gpu.
             # When in ddp, total_batch_size = batch_size_per_gpu * scale,
@@ -43,33 +43,35 @@ class LinearScalingRule(Callback):
             msg, _ = self.__update(
                 trainer.datamodule.batch_size,
                 trainer.datamodule.batch_size * scale,
-                msg, 'batch_size')
+                msg,
+                "batch_size",
+            )
             total_batch_size = trainer.datamodule.batch_size * scale
         else:
             total_batch_size = scale
         # learning rate
         lr_scale = total_batch_size
         msg, lr = self.__update(
-            trainer.optimizers[0].param_groups[0]['lr'],
-            trainer.optimizers[0].param_groups[0]['lr'] * lr_scale,
-            msg, 'learning_rate')
-        trainer.optimizers[0].param_groups[0]['lr'] = lr
+            trainer.optimizers[0].param_groups[0]["lr"],
+            trainer.optimizers[0].param_groups[0]["lr"] * lr_scale,
+            msg,
+            "learning_rate",
+        )
+        trainer.optimizers[0].param_groups[0]["lr"] = lr
         # max steps
         if trainer.max_steps:
             msg, max_steps = self.__update(
-                trainer.max_steps,
-                trainer.max_steps // scale,
-                msg, 'max steps')
+                trainer.max_steps, trainer.max_steps // scale, msg, "max steps"
+            )
             trainer.max_steps = max_steps
         # min steps
         if trainer.min_steps:
             msg, min_steps = self.__update(
-                trainer.min_steps,
-                trainer.min_steps // scale,
-                msg, 'min steps')
+                trainer.min_steps, trainer.min_steps // scale, msg, "min steps"
+            )
             trainer.min_steps = min_steps
         # TODO: warmup steps
-        logger.info(msg[:-2])   # ignore last ", "
+        logger.info(msg[:-2])  # ignore last ", "
 
     def __update(self, old_value, new_value, msg, name):
         msg += f"{name}: {old_value} => {new_value}, "
@@ -77,4 +79,4 @@ class LinearScalingRule(Callback):
 
     def __show_epoch_size(self, trainer):
         epoch_size = trainer.num_training_batches
-        logger.info(f'epoch size: {epoch_size}')
+        logger.info(f"epoch size: {epoch_size}")

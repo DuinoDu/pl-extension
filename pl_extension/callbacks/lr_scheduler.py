@@ -1,7 +1,8 @@
-from typing import List, Set, Dict, Tuple, Optional
-from easydict import EasyDict as edict
 import copy
+from typing import Dict, List, Optional, Set, Tuple
+
 import mmcv
+from easydict import EasyDict as edict
 from mmcv.runner.hooks import HOOKS
 from pytorch_lightning.callbacks.base import Callback
 
@@ -35,11 +36,11 @@ class LRScheduler(Callback):
 
     def __init__(self, cfg: Dict):
         lr_config = copy.deepcopy(cfg)
-        assert 'contrib' in lr_config
-        assert lr_config.pop('contrib') == 'mmcv'
+        assert "contrib" in lr_config
+        assert lr_config.pop("contrib") == "mmcv"
         # copy-and-paste from mmcv.runner.BaseRunner.register_lr_hook
-        assert 'policy' in lr_config
-        policy_type = lr_config.pop('policy')
+        assert "policy" in lr_config
+        policy_type = lr_config.pop("policy")
         # If the type of policy is all in lower case, e.g., 'cyclic',
         # then its first letter will be capitalized, e.g., to be 'Cyclic'.
         # This is for the convenient usage of Lr updater.
@@ -48,8 +49,8 @@ class LRScheduler(Callback):
         # the string will not be changed if it contains capital letters.
         if policy_type == policy_type.lower():
             policy_type = policy_type.title()
-        hook_type = policy_type + 'LrUpdaterHook'
-        lr_config['type'] = hook_type
+        hook_type = policy_type + "LrUpdaterHook"
+        lr_config["type"] = hook_type
         self.hook = mmcv.build_from_cfg(lr_config, HOOKS)
         self.runner = None
 
@@ -78,9 +79,10 @@ class LRScheduler(Callback):
         self.runner.iter = trainer.global_step
         self.hook.before_train_iter(self.runner)
         # log learning rate
-        legacy_metrics = \
+        legacy_metrics = (
             trainer.logger_connector.cached_results.legacy_batch_log_metrics
-        legacy_metrics['lr'] = trainer.optimizers[0].param_groups[0]['lr']
+        )
+        legacy_metrics["lr"] = trainer.optimizers[0].param_groups[0]["lr"]
 
     def __build_runner_from_trainer(self, trainer):
         """
@@ -97,5 +99,7 @@ class LRScheduler(Callback):
         if trainer.max_steps:
             runner.max_iters = trainer.max_steps
         else:
-            runner.max_iters = trainer.max_epochs * len(trainer.train_dataloader)   # noqa
+            runner.max_iters = trainer.max_epochs * len(
+                trainer.train_dataloader
+            )  # noqa
         return runner

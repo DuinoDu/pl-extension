@@ -1,14 +1,15 @@
-from typing import List, Set, Dict, Tuple, Optional
 import logging
 import os
 import sys
+from typing import Dict, List, Optional, Set, Tuple
+
+from pl_extension.utilities.logger import setup_logger
+from pl_extension.utilities.rand import time_string
+
 from pytorch_lightning.loggers.base import LightningLoggerBase
 from pytorch_lightning.utilities import rank_zero_only
-from pl_extension.utilities.rand import time_string
-from pl_extension.utilities.logger import setup_logger
 
-
-__all__ = ['LoggingLogger']
+__all__ = ["LoggingLogger"]
 
 
 class LoggingLogger(LightningLoggerBase):
@@ -31,21 +32,24 @@ class LoggingLogger(LightningLoggerBase):
 
     def __init__(
         self,
-        logdir: str = '.pl_extension_logs',
+        logdir: str = ".pl_extension_logs",
         *,
-        prefix: str = 'pl',
-        skip_metrics: List = []):
+        prefix: str = "pl",
+        skip_metrics: List = [],
+    ):
         super().__init__()
         if not os.path.exists(logdir):
             os.makedirs(logdir)
-        logfile = os.path.join(logdir, f'{prefix}-{time_string()}.log')
+        logfile = os.path.join(logdir, f"{prefix}-{time_string()}.log")
         self._experiment = setup_logger(logfile, name=prefix)
         self._skip_metrics = skip_metrics
 
     def __getattr__(self, name):
-        if name == 'logger':
-            self.experiment.warning('xxx.logger is deprecated, '
-                                    'please use xxx.experiment instead')
+        if name == "logger":
+            self.experiment.warning(
+                "xxx.logger is deprecated, "
+                "please use xxx.experiment instead"
+            )
             return self.experiment
 
     @property
@@ -68,25 +72,26 @@ class LoggingLogger(LightningLoggerBase):
     @rank_zero_only
     def log_metrics(self, metrics, step):
         # skip metric in list
-        metrics = {k: metrics[k] for k in metrics
-                   if k not in self._skip_metrics}
-        _str = ''
-        if 'epoch' in metrics:
-            _str += "Epoch[%d] " % metrics.pop('epoch')
-        if 'iter' in metrics:
-            _str += "Iter[%d] " % metrics.pop('iter')
+        metrics = {
+            k: metrics[k] for k in metrics if k not in self._skip_metrics
+        }
+        _str = ""
+        if "epoch" in metrics:
+            _str += "Epoch[%d] " % metrics.pop("epoch")
+        if "iter" in metrics:
+            _str += "Iter[%d] " % metrics.pop("iter")
         else:
             _str += "Step[%d] " % step
-        if 'speed' in metrics:
-            _str += "Speed: %.2f samples/sec, " % metrics.pop('speed')
+        if "speed" in metrics:
+            _str += "Speed: %.2f samples/sec, " % metrics.pop("speed")
         for k in metrics:
             if isinstance(metrics[k], int):
-                _format = '%s=%d, '
+                _format = "%s=%d, "
             elif isinstance(metrics[k], float):
-                if k == 'lr':
-                    _format = '%s=%.6f, '
+                if k == "lr":
+                    _format = "%s=%.6f, "
                 else:
-                    _format = '%s=%.4f, '
+                    _format = "%s=%.4f, "
             else:
                 raise ValueError(f"Unknown value type: {type(metrics[k])}")
             _str += _format % (k, metrics[k])
@@ -100,7 +105,7 @@ class LoggingLogger(LightningLoggerBase):
 
     @property
     def name(self):
-        return 'pint-logger'
+        return "pint-logger"
 
     @property
     def version(self):

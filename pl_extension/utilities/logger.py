@@ -3,21 +3,24 @@ Below are logger setting.
 They are mainly adopted from
 https://github.com/facebookresearch/detectron2/blob/master/detectron2/utils/logger.py   # noqa
 """
-from typing import List, Set, Dict, Tuple, Optional
 import atexit
 import functools
 import logging
 import os
 import sys
+from typing import Dict, List, Optional, Set, Tuple
+
 from termcolor import colored
+
 from .file_io import path_manager as pm
+
 try:
     from pint_horizon.aidi import running_in_cluster
 except ImportError as e:
     running_in_cluster = None
 
 
-__all__ = ['setup_logger']
+__all__ = ["setup_logger"]
 
 
 class _ColorfulFormatter(logging.Formatter):
@@ -33,7 +36,10 @@ class _ColorfulFormatter(logging.Formatter):
         log = super(_ColorfulFormatter, self).formatMessage(record)
         if record.levelno == logging.WARNING:
             prefix = colored("WARNING", "red", attrs=["blink"])
-        elif record.levelno == logging.ERROR or record.levelno == logging.CRITICAL:
+        elif (
+            record.levelno == logging.ERROR
+            or record.levelno == logging.CRITICAL
+        ):
             prefix = colored("ERROR", "red", attrs=["blink", "underline"])
         else:
             return log
@@ -43,7 +49,12 @@ class _ColorfulFormatter(logging.Formatter):
 # so that calling setup_logger multiple times won't add many handlers
 @functools.lru_cache()
 def setup_logger(
-    output=None, distributed_rank=0, *, color=None, name="pl-extension", abbrev_name=None
+    output=None,
+    distributed_rank=0,
+    *,
+    color=None,
+    name="pl-extension",
+    abbrev_name=None
 ):
     """
     Initialize the detectron2 logger and set its verbosity level to "DEBUG".
@@ -72,7 +83,8 @@ def setup_logger(
         abbrev_name = "pl" if name == "pl-extension" else name
 
     plain_formatter = logging.Formatter(
-        "[%(asctime)s] %(name)s %(levelname)s: %(message)s", datefmt="%m/%d %H:%M:%S"
+        "[%(asctime)s] %(name)s %(levelname)s: %(message)s",
+        datefmt="%m/%d %H:%M:%S",
     )
     # stdout logging: master only
     if distributed_rank == 0:

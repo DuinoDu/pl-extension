@@ -1,12 +1,11 @@
 from pytorch_lightning.loggers import MLFlowLogger as _MLFlowLogger
 
-
-__all__ = ['MLFlowLogger']
+__all__ = ["MLFlowLogger"]
 
 
 class MLFlowLogger(_MLFlowLogger):
 
-    """ Custom run_id for MLFlowLogger, required by AIDI."""
+    """Custom run_id for MLFlowLogger, required by AIDI."""
 
     @property
     def run_id(self):

@@ -1,7 +1,7 @@
-from typing import List, Set, Dict, Tuple, Optional
 import logging
-from pytorch_lightning.callbacks import ModelCheckpoint as _ModelCheckpoint
+from typing import Dict, List, Optional, Set, Tuple
 
+from pytorch_lightning.callbacks import ModelCheckpoint as _ModelCheckpoint
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +15,9 @@ class ModelCheckpoint(_ModelCheckpoint):
     2. add train_epoch_end callback.
 
     """
+
     def __init__(self, *args, **kwargs):
-        self.on_epoch = kwargs.pop('on_epoch', False)
+        self.on_epoch = kwargs.pop("on_epoch", False)
         super(ModelCheckpoint, self).__init__(*args, **kwargs)
 
     def on_train_epoch_end(self, trainer, pl_module, outputs):
@@ -31,6 +32,8 @@ class ModelCheckpoint(_ModelCheckpoint):
         epoch = trainer.current_epoch
         global_step = trainer.global_step
         monitor_candidates = self._monitor_candidates(trainer)
-        filepath = self.format_checkpoint_name(epoch, global_step, monitor_candidates)
+        filepath = self.format_checkpoint_name(
+            epoch, global_step, monitor_candidates
+        )
         if self._fs.exists(filepath):
-            logger.info(f'Save checkpoint to {filepath}')
+            logger.info(f"Save checkpoint to {filepath}")

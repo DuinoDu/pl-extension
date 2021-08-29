@@ -1,7 +1,6 @@
 import time
 
-
-__all__ = ['time_string']
+__all__ = ["time_string"]
 
 
 def time_string(short=False) -> str:
@@ -15,6 +14,6 @@ def time_string(short=False) -> str:
     min = time.localtime().tm_min
     sec = time.localtime().tm_sec
     if short:
-        return '%02d%02d%02d' % (hour, min, sec)
+        return "%02d%02d%02d" % (hour, min, sec)
     else:
-        return '%04d%02d%02d_%02d%02d%02d' % (year, mon, day, hour, min, sec)
+        return "%04d%02d%02d_%02d%02d%02d" % (year, mon, day, hour, min, sec)
