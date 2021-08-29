@@ -2,8 +2,6 @@
 pl trainer io.
 """
 
-import os
-
 from pl_extension.callbacks import ModelCheckpoint
 
 import pytorch_lightning as pl

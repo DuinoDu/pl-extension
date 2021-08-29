@@ -48,7 +48,7 @@ repos:
     hooks:
     -   id: black
         name: Auto format python code.
-        entry: black -l 79
+        entry: black -l 80
         language: system
         types: [python]
 -   repo: local

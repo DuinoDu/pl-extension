@@ -1,7 +1,8 @@
 import logging
-from typing import Dict, List, Optional, Set, Tuple
 
 from pytorch_lightning.callbacks.base import Callback
+
+__all__ = ["Speed"]
 
 logger = logging.getLogger(__name__)
 
@@ -41,9 +42,6 @@ class Speed(Callback):
     def on_train_epoch_end(self, trainer, pl_module, *args, **kwargs):
         if not self.__has_profiler(trainer):
             return
-        legacy_metrics = (
-            trainer.logger_connector.cached_results.legacy_batch_log_metrics
-        )
         run_training_epoch_time = trainer.profiler.recorded_durations[
             "run_training_epoch"
         ]

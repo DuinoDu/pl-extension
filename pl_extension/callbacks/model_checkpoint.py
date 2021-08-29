@@ -1,7 +1,8 @@
 import logging
-from typing import Dict, List, Optional, Set, Tuple
 
 from pytorch_lightning.callbacks import ModelCheckpoint as _ModelCheckpoint
+
+__all__ = ["ModelCheckpoint"]
 
 logger = logging.getLogger(__name__)
 

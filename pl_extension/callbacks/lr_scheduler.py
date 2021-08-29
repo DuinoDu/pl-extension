@@ -1,10 +1,12 @@
 import copy
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict
 
 import mmcv
 from easydict import EasyDict as edict
 from mmcv.runner.hooks import HOOKS
 from pytorch_lightning.callbacks.base import Callback
+
+__all__ = ["LRScheduler"]
 
 
 class LRScheduler(Callback):

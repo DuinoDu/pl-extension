@@ -1,7 +1,8 @@
 import logging
-from typing import Dict, List, Optional, Set, Tuple
 
 from pytorch_lightning.callbacks.base import Callback
+
+__all__ = ["LinearScalingRule"]
 
 logger = logging.getLogger(__name__)
 

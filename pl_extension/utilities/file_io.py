@@ -8,7 +8,7 @@ from pl_extension.utilities.env import HDFS_CACHE
 import mmcv
 from iopath.common.file_io import HTTPURLHandler, PathManagerFactory
 
-__all__ = ["load_file", "open_file", "PathManager"]
+__all__ = ["load_file", "open_file", "path_manager"]
 
 
 logger = logging.getLogger(__name__)

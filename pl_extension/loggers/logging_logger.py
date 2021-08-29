@@ -1,7 +1,5 @@
-import logging
 import os
-import sys
-from typing import Dict, List, Optional, Set, Tuple
+from typing import List
 
 from pl_extension.utilities.logger import setup_logger
 from pl_extension.utilities.rand import time_string
@@ -47,8 +45,7 @@ class LoggingLogger(LightningLoggerBase):
     def __getattr__(self, name):
         if name == "logger":
             self.experiment.warning(
-                "xxx.logger is deprecated, "
-                "please use xxx.experiment instead"
+                "xxx.logger is deprecated, " "please use xxx.experiment instead"
             )
             return self.experiment
 
