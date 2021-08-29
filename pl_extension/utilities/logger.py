@@ -8,7 +8,6 @@ import functools
 import logging
 import os
 import sys
-from typing import Dict, List, Optional, Set, Tuple
 
 from termcolor import colored
 
@@ -16,7 +15,7 @@ from .file_io import path_manager as pm
 
 try:
     from pint_horizon.aidi import running_in_cluster
-except ImportError as e:
+except ImportError:
     running_in_cluster = None
 
 
@@ -60,12 +59,13 @@ def setup_logger(
     Initialize the detectron2 logger and set its verbosity level to "DEBUG".
 
     Args:
-        output (str): a file name or a directory to save log. If None, will not save log file.
+        output (str): a file name or a directory to save log. If None,
+            will not save log file.
             If ends with ".txt" or ".log", assumed to be a file name.
             Otherwise, logs will be saved to `output/log.txt`.
         name (str): the root module name of this logger
-        abbrev_name (str): an abbreviation of the module, to avoid long names in logs.
-            Set to "" to not log the root module in logs.
+        abbrev_name (str): an abbreviation of the module, to avoid long names
+            in logs. Set to "" to not log the root module in logs.
             By default, will abbreviate "detectron2" to "d2" and leave other
             modules unchanged.
 
