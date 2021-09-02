@@ -10,3 +10,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - add `add_options` and `apply_options` in `pl_extension.utilities.config`.
+- add `update_config` in `pl_extension.utilities.config`.
