@@ -50,7 +50,7 @@ def update_config(config: Dict[str, Any], vars_dict: Dict[str, Any]) -> None:
 
     Examples:
 
-        config = dict()
+        config = dict(
             a="python",
             b="FILENAME",
             c=["python", "FILENAME", "python FILENAME"],
