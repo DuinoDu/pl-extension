@@ -53,7 +53,8 @@ def setup_logger(
     *,
     color=None,
     name="pl-extension",
-    abbrev_name=None
+    abbrev_name=None,
+    level=logging.INFO
 ):
     """
     Initialize the detectron2 logger and set its verbosity level to "DEBUG".
@@ -73,7 +74,7 @@ def setup_logger(
         logging.Logger: a logger
     """
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(level)
     logger.propagate = False
 
     if not color:

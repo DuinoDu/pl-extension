@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import List
 
@@ -34,12 +35,13 @@ class LoggingLogger(LightningLoggerBase):
         *,
         prefix: str = "pl",
         skip_metrics: List = [],
+        level=logging.INFO,
     ):
         super().__init__()
         if not os.path.exists(logdir):
             os.makedirs(logdir)
         logfile = os.path.join(logdir, f"{prefix}-{time_string()}.log")
-        self._experiment = setup_logger(logfile, name=prefix)
+        self._experiment = setup_logger(logfile, name=prefix, level=level)
         self._skip_metrics = skip_metrics
 
     def __getattr__(self, name):
