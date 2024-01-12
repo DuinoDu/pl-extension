@@ -1,6 +1,6 @@
 import os
 
-from pytorch_lightning.loggers import MLFlowLogger as _MLFlowLogger
+from lightning.pytorch.loggers import MLFlowLogger as _MLFlowLogger
 
 __all__ = ["MLFlowLogger"]
 

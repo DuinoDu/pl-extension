@@ -5,13 +5,13 @@ from typing import List
 from pl_extension.utilities.logger import setup_logger
 from pl_extension.utilities.rand import time_string
 
-from pytorch_lightning.loggers.base import LightningLoggerBase
-from pytorch_lightning.utilities import rank_zero_only
+from lightning.pytorch.loggers.logger import Logger
+from lightning.pytorch.utilities import rank_zero_only
 
 __all__ = ["LoggingLogger"]
 
 
-class LoggingLogger(LightningLoggerBase):
+class LoggingLogger(Logger):
 
     """
     Logging logger.

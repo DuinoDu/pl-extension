@@ -4,12 +4,12 @@ pl trainer io.
 
 from pl_extension.callbacks import ModelCheckpoint
 
-import pytorch_lightning as pl
+import lightning as L
 
 __all__ = ["get_checkpoint_dirpath"]
 
 
-def get_checkpoint_dirpath(trainer: pl.Trainer) -> str:
+def get_checkpoint_dirpath(trainer: L.Trainer) -> str:
     """
     return checkpoint dirpath.
     """

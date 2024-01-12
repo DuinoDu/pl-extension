@@ -4,7 +4,7 @@ from typing import Dict
 import mmcv
 from easydict import EasyDict as edict
 from mmcv.runner.hooks import HOOKS
-from pytorch_lightning.callbacks.base import Callback
+from lightning.pytorch.callbacks.base import Callback
 
 __all__ = ["LRScheduler"]
 

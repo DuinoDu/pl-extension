@@ -1,6 +1,6 @@
 import logging
 
-from pytorch_lightning.callbacks.base import Callback
+from lightning.pytorch.callbacks.base import Callback
 
 __all__ = ["LinearScalingRule"]
 
