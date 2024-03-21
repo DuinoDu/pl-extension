@@ -1,6 +1,6 @@
 import logging
 
-from lightning.pytorch.callbacks.base import Callback
+from lightning.pytorch import Callback
 
 __all__ = ["Speed"]
 
@@ -15,10 +15,10 @@ class Speed(Callback):
     """
 
     def on_train_batch_end(
-        self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx
+        self, trainer, pl_module, outputs, batch, batch_idx
     ):
         legacy_metrics = (
-            trainer.logger_connector.cached_results.legacy_batch_log_metrics
+            trainer._logger_connector.cached_results.legacy_batch_log_metrics
         )
         legacy_metrics["iter"] = trainer.global_step
         legacy_metrics["epoch"] = trainer.current_epoch
