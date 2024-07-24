@@ -27,7 +27,7 @@ setup(
     description="extension for pytorch-lightning",
     long_description=readme,
     author="duinodu",
-    author_email="472365351@qq.com",
+    author_email="472365351duino@gmail.com",
     url="https://github.com/duinodu/pl-extension",
     project_urls={
         "Bug Tracker": "https://github.com/duinodu/pl-extension/issues",

@@ -1,4 +1,4 @@
-mmcv
 iopath
 termcolor
 lightning
+# mmcv

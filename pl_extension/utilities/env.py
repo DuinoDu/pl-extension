@@ -7,6 +7,12 @@ PL_EXTENSION_CACHE = os.getenv(
 
 HDFS_CACHE = PL_EXTENSION_CACHE
 
+try:
+    import mmcv
+    MMCV_INSTALLED = True
+except ModuleNotFoundError as e:
+    MMCV_INSTALLED = False
+
 
 def check_version(name, version, strict=False):
     if strict:

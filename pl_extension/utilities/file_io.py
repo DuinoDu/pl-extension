@@ -3,10 +3,12 @@ import os
 from contextlib import contextmanager
 from typing import Dict
 
-from pl_extension.utilities.env import HDFS_CACHE
+from pl_extension.utilities.env import HDFS_CACHE, MMCV_INSTALLED
 
-import mmcv
 from iopath.common.file_io import HTTPURLHandler, PathManagerFactory
+
+if MMCV_INSTALLED:
+    import mmcv
 
 __all__ = ["load_file", "open_file", "path_manager"]
 
@@ -18,6 +20,7 @@ def load_file(file_path: str) -> Dict:
     """
     load file from .py/.yaml/.json/.yml/.pkl
     """
+    assert MMCV_INSTALLED, "mmcv is required."
     file_ext = os.path.splitext(file_path)[1]
     assert file_ext in [
         ".py",
@@ -26,7 +29,6 @@ def load_file(file_path: str) -> Dict:
         "json",
         "pkl",
     ], f" Bad file ext: {file_path}"
-
     if file_ext == ".py":
         content = mmcv.Config.fromfile(file_path)
         content = dict(content)

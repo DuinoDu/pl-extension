@@ -1,10 +1,17 @@
 import copy
 from typing import Dict
 
-import mmcv
 from easydict import EasyDict as edict
-from mmcv.runner.hooks import HOOKS
 from lightning.pytorch import Callback
+from pl_extension.utilities.env import MMCV_INSTALLED
+
+
+if MMCV_INSTALLED:
+    import mmcv
+    from mmcv.runner.hooks import HOOKS
+else:
+    mmcv = HOOKS = None
+    
 
 __all__ = ["LRScheduler"]
 
@@ -37,6 +44,9 @@ class LRScheduler(Callback):
     """
 
     def __init__(self, cfg: Dict):
+        if not MMCV_INSTALLED:
+            raise RuntimeError("mmcv is required by LRScheduler.")
+
         lr_config = copy.deepcopy(cfg)
         assert "contrib" in lr_config
         assert lr_config.pop("contrib") == "mmcv"

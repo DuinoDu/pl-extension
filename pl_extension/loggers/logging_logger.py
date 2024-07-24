@@ -7,6 +7,7 @@ from pl_extension.utilities.rand import time_string
 
 from lightning.pytorch.loggers.logger import Logger
 from lightning.pytorch.utilities import rank_zero_only
+from lightning.fabric.utilities.cloud_io import get_filesystem, _is_dir
 
 __all__ = ["LoggingLogger"]
 
@@ -17,8 +18,8 @@ class LoggingLogger(Logger):
     Logging logger.
 
     Args:
-        logdir: local logs save path.
-        prefix: logfile name prefix, default is 'pl'.
+        root_dir: local logs save path.
+        prefix: log data prefix, default is 'pl'
         skip_metrics: skip certain metric, useful for iter-wise metrics.
 
     Example::
@@ -31,18 +32,23 @@ class LoggingLogger(Logger):
 
     def __init__(
         self,
-        logdir: str = ".pl_extension_logs",
+        root_dir: str = ".pl_extension_logs",
         *,
+        version: str = None,
         prefix: str = "pl",
+        name: str = "pint_logger",
         skip_metrics: List = [],
         level=logging.INFO,
     ):
         super().__init__()
-        if not os.path.exists(logdir):
-            os.makedirs(logdir)
-        logfile = os.path.join(logdir, f"{prefix}-{time_string()}.log")
-        self._experiment = setup_logger(logfile, name=prefix, level=level)
+        root_dir = os.fspath(root_dir)
+        self._root_dir = root_dir
+        self._version = version
+        self._name = name
         self._skip_metrics = skip_metrics
+        self._level = level
+        self._prefix = prefix
+        self._fs = get_filesystem(root_dir)
 
     def __getattr__(self, name):
         if name == "logger":
@@ -54,6 +60,13 @@ class LoggingLogger(Logger):
     @property
     @rank_zero_only
     def experiment(self):
+        if self._experiment is not None:
+            return self._experiment
+        
+        if self.root_dir:
+            self._fs.makedirs(self.log_dir, exist_ok=True)
+        logfile = os.path.join(self.log_dir, f"logginglogger.log")
+        self._experiment = setup_logger(logfile, name=self._prefix, level=self._level)
         return self._experiment
 
     @rank_zero_only
@@ -104,8 +117,42 @@ class LoggingLogger(Logger):
 
     @property
     def name(self):
-        return "pint-logger"
+        return self._name
+
+    @property
+    def root_dir(self):
+        return self._root_dir
 
     @property
     def version(self):
-        pass
+        if self._version is None:
+            self._version = self._get_next_version()
+        return self._version
+
+    def _get_next_version(self):
+        save_dir = os.path.join(self.root_dir, self.name)
+        try:
+            listdir_info = self._fs.listdir(save_dir)
+        except OSError as e:
+            return 0
+
+        existing_versions = []
+        for listing in listdir_info:
+            d = listing["name"]
+            bn = os.path.basename(d)
+            if _is_dir(self._fs, d) and bn.starswith("version_"):
+                dir_ver = bn.split("_")[1].replace("/", "")
+                if dir_ver.isdigit():
+                    existing_versions.append(int(dir_ver))
+        if len(existing_versions) == 0:
+            return 0
+        return max(existing_versions) + 1
+    
+    @property
+    def log_dir(self) -> str:
+        version = self.version if isinstance(self.version, str) else f"version_{self.version}"
+        log_dir = os.path.join(self.root_dir, self.name, version)
+        log_dir = os.path.expandvars(log_dir)
+        log_dir = os.path.expanduser(log_dir)
+        return log_dir
+
