@@ -7,7 +7,7 @@ from pl_extension.utilities.rand import time_string
 
 from lightning.pytorch.loggers.logger import Logger
 from lightning.pytorch.utilities import rank_zero_only
-from lightning.fabric.utilities.cloud_io import get_filesystem, _is_dir
+from lightning.fabric.utilities.cloud_io import get_filesystem
 
 __all__ = ["LoggingLogger"]
 
@@ -140,7 +140,7 @@ class LoggingLogger(Logger):
         for listing in listdir_info:
             d = listing["name"]
             bn = os.path.basename(d)
-            if _is_dir(self._fs, d) and bn.starswith("version_"):
+            if self._fs.is_dir(d) and bn.starswith("version_"):
                 dir_ver = bn.split("_")[1].replace("/", "")
                 if dir_ver.isdigit():
                     existing_versions.append(int(dir_ver))
